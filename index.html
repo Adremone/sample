@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AIIMS Exams Login</title>
+
+    <!-- FAVICON -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://www.aiimsexams.ac.in/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.3211ffda.png&w=384&q=75"
+    />
+
+    <style>
+      /* RUBIK FONT */
+
+      @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap");
+
+      * {
+        font-family: "Rubik", sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #f4f6f9;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* LOGIN CONTAINER */
+
+      .login-container {
+        width: 100%;
+        max-width: 420px;
+      }
+
+      /* HEADER */
+
+      .login-header {
+        background: linear-gradient(135deg, #005baa, #0078d7);
+
+        color: white;
+
+        padding: 25px;
+
+        display: flex;
+
+        justify-content: space-around;
+
+        align-items: center;
+
+        border-radius: 12px 12px 0 0;
+
+        text-align: center;
+
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-header h1 {
+        font-size: 24px;
+        white-space: nowrap;
+        margin-bottom: 4px;
+      }
+
+      .login-header p {
+        font-size: 14px;
+        white-space: nowrap;
+        opacity: 0.95;
+      }
+
+      /* LOGIN BOX */
+
+      .login-box {
+        background: white;
+        padding: 30px;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      /* FORM */
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #d0d7de;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #0078d7;
+        box-shadow: 0 0 0 3px rgba(0, 120, 215, 0.15);
+      }
+
+      /* BUTTON */
+
+      .login-btn {
+        width: 100%;
+        background: #0078d7;
+        color: white;
+        border: none;
+        padding: 13px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .login-btn:hover {
+        background: #005baa;
+      }
+
+      /* EXTRA LINKS */
+
+      .extra-links {
+        margin-top: 18px;
+        text-align: center;
+      }
+
+      .extra-links a {
+        color: #0078d7;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .extra-links a:hover {
+        text-decoration: underline;
+      }
+
+      /* FOOTER */
+
+      .footer-text {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 480px) {
+        .login-box {
+          padding: 22px;
+        }
+
+        .login-header {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .login-header h1 {
+          white-space: normal;
+          font-size: 20px;
+        }
+
+        .login-header p {
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="login-container">
+      <!-- HEADER -->
+
+      <div class="login-header">
+        <div class="header-left">
+          <img
+            src="https://www.aiimsexams.ac.in/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.3211ffda.png&w=384&q=75"
+            alt="AIIMS Logo"
+            width="60"
+          />
+        </div>
+
+        <div class="header-right">
+          <h1>AIIMS Examination</h1>
+
+          <p>Assessment & Examination Registration</p>
+        </div>
+      </div>
+
+      <!-- LOGIN BOX -->
+
+      <div class="login-box">
+        <form onsubmit="login(event)">
+          <!-- USERNAME -->
+
+          <div class="form-group">
+            <label>Registration ID</label>
+
+            <input
+              type="text"
+              id="username"
+              class="form-control"
+              placeholder="Enter Registration ID"
+              required
+            />
+          </div>
+
+          <!-- PASSWORD -->
+
+          <div class="form-group">
+            <label>Password</label>
+
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Enter Password"
+              required
+            />
+          </div>
+
+          <!-- BUTTON -->
+
+          <button class="login-btn" type="submit">Login</button>
+        </form>
+
+        <!-- EXTRA LINKS -->
+
+        <div class="extra-links">
+          <a href="#"> Forgot Password? </a>
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer-text">© All India Institute of Medical Sciences</div>
+      </div>
+    </div>
+
+    <!-- LOGIN SCRIPT -->
+    <script>
+      /* CHECK LOGIN STATUS ON PAGE LOAD */
+
+      window.onload = function () {
+        const token = sessionStorage.getItem("aiims_token");
+
+        /* IF ALREADY LOGGED IN */
+
+        if (token) {
+          window.location.href = "result.html";
+        }
+      };
+
+      /* LOGIN FUNCTION */
+
+      function login(event) {
+        event.preventDefault();
+
+        const username = document.getElementById("username").value;
+
+        const password = document.getElementById("password").value;
+
+        /* VALID CREDENTIALS */
+
+        const validUsername = "admin";
+
+        const validPassword = "admin123";
+
+        if (username === validUsername && password === validPassword) {
+          /* SAVE SESSION TOKEN */
+
+          sessionStorage.setItem("aiims_token", "logged_in");
+
+          /* REDIRECT */
+
+          window.location.href = "result.html";
+        } else {
+          alert("Invalid credentials");
+        }
+      }
+    </script>
+  </body>
+</html>
