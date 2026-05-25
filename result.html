@@ -77,12 +77,11 @@
 
       /* RESULT TITLE */
 
-      .result-body {
-        padding: 35px 32px;
-      }
-
       .result-heading {
         text-align: center;
+        padding-top: 35px;
+        padding-left: 32px;
+        padding-right: 32px;
         color: #1d2f5f;
         font-size: 20px;
         font-weight: bold;
@@ -100,6 +99,7 @@
       .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 180px;
+        padding: 0 32px;
         gap: 40px;
         align-items: start;
       }
@@ -137,7 +137,6 @@
       .stats-section {
         margin-top: 35px;
         background: linear-gradient(135deg, #005baa, #0078d7);
-        border-radius: 12px;
         color: white;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -257,11 +256,13 @@
           grid-template-columns: 1fr;
         }
 
-        .result-body {
-          padding: 25px 18px;
+        .info-block {
+          padding: 0 18px;
         }
 
         .result-heading {
+          padding: 25px 18px;
+          padding-bottom: 0px;
           font-size: 18px;
         }
       }
@@ -287,12 +288,10 @@
           </div>
 
           <div class="header-right">
-            <div>23-05-2026</div>
-            <div>5:29 PM</div>
+            <div id="current-date">23-05-2026</div>
+            <div id="current-time">5:29 PM</div>
           </div>
         </div>
-
-        <!-- BODY -->
 
         <div class="result-body">
           <div class="result-heading">
@@ -415,6 +414,32 @@
           reader.readAsDataURL(blob);
         });
       }
+
+      function updateDateTime() {
+        const now = new Date();
+
+        // Format Date: DD-MM-YYYY
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const year = now.getFullYear();
+
+        const formattedDate = `${day}-${month}-${year}`;
+
+        // Format Time: HH:MM:SS AM/PM
+        const formattedTime = now.toLocaleTimeString("en-IN", {
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          hour12: true,
+        });
+
+        document.getElementById("current-date").textContent = formattedDate;
+        document.getElementById("current-time").textContent = formattedTime;
+      }
+
+      updateDateTime();
+
+      setInterval(updateDateTime, 1000);
 
       async function downloadResult() {
         const hiddenElements = document.querySelectorAll(".no-print");
