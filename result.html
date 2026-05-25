@@ -168,24 +168,27 @@
       .pdf-mode {
         width: 1200px !important;
         min-width: 1200px !important;
-        max-width: 1200px !important;
+        border-radius: 14px !important;
         padding: 20px !important;
-        background: white;
+        max-width: 1200px !important;
       }
 
       .pdf-mode .info-grid {
         grid-template-columns: 1fr 1fr 180px !important;
+        border-radius: 0px 0px 14px 14px !important;
       }
 
       /* FORCE DESKTOP STATS */
       .pdf-mode .stats-section {
         grid-template-columns: repeat(5, 1fr) !important;
+        border-radius: 0px 0px 14px 14px !important;
       }
 
       /* FORCE DESKTOP HEADER */
       .pdf-mode .top-header {
         flex-direction: row !important;
         text-align: left !important;
+        border-radius: 14px 14px 0px 0px !important;
       }
 
       .pdf-mode .header-left {
@@ -399,22 +402,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-      async function toDataURL(url) {
-        const response = await fetch(url);
-
-        const blob = await response.blob();
-
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-
-          reader.onloadend = () => resolve(reader.result);
-
-          reader.onerror = reject;
-
-          reader.readAsDataURL(blob);
-        });
-      }
-
       function updateDateTime() {
         const now = new Date();
 
@@ -437,48 +424,54 @@
         document.getElementById("current-time").textContent = formattedTime;
       }
 
+      // Initial call
       updateDateTime();
 
+      // Update every second
       setInterval(updateDateTime, 1000);
 
+      let isDownloading = false;
+
       async function downloadResult() {
+        if (isDownloading) return;
+
+        isDownloading = true;
+
         const hiddenElements = document.querySelectorAll(".no-print");
 
         hiddenElements.forEach((el) => {
           el.style.display = "none";
         });
 
+        let wrapper = null;
+
         try {
           const originalElement = document.querySelector(".result-container");
 
-          // Clone
           const clonedElement = originalElement.cloneNode(true);
 
-          // Add pdf-only class
           clonedElement.classList.add("pdf-mode");
 
-          // Hidden wrapper
-          const wrapper = document.createElement("div");
+          clonedElement.style.width = "1200px";
 
-          wrapper.style.position = "absolute";
+          wrapper = document.createElement("div");
+
+          wrapper.style.position = "fixed";
+          wrapper.style.left = "-99999px";
           wrapper.style.top = "0";
-          wrapper.style.left = "0";
-          wrapper.style.opacity = "0";
-          wrapper.style.pointerEvents = "none";
-          wrapper.style.zIndex = "-1";
 
           wrapper.appendChild(clonedElement);
 
           document.body.appendChild(wrapper);
 
-          // Render canvas
           const canvas = await html2canvas(clonedElement, {
-            scale: 2,
+            scale: window.devicePixelRatio > 1 ? 1.5 : 1,
             useCORS: true,
             backgroundColor: "#ffffff",
+            scrollY: -window.scrollY,
           });
 
-          const imageData = canvas.toDataURL("image/png");
+          const imageData = canvas.toDataURL("image/jpeg", 0.95);
 
           const { jsPDF } = window.jspdf;
 
@@ -498,7 +491,7 @@
 
           let position = 0;
 
-          pdf.addImage(imageData, "PNG", 0, position, imgWidth, imgHeight);
+          pdf.addImage(imageData, "JPEG", 0, position, imgWidth, imgHeight);
 
           heightLeft -= pdfHeight;
 
@@ -507,22 +500,27 @@
 
             pdf.addPage();
 
-            pdf.addImage(imageData, "PNG", 0, position, imgWidth, imgHeight);
+            pdf.addImage(imageData, "JPEG", 0, position, imgWidth, imgHeight);
 
             heightLeft -= pdfHeight;
           }
 
           pdf.save("AIIMS_Result.pdf");
-
-          document.body.removeChild(wrapper);
         } catch (error) {
           console.error(error);
-          alert("Failed to download result");
-        }
 
-        hiddenElements.forEach((el) => {
-          el.style.display = "";
-        });
+          alert("Failed to download result");
+        } finally {
+          hiddenElements.forEach((el) => {
+            el.style.display = "";
+          });
+
+          if (wrapper?.parentNode) {
+            wrapper.parentNode.removeChild(wrapper);
+          }
+
+          isDownloading = false;
+        }
       }
     </script>
   </body>
